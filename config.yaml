@@ -12,11 +12,25 @@ proxies:
     password: G4J5AnTYBKqSUbchxHhmhk
 
 proxy-groups:
-  - name: GLOBAL
+  - name: PROXY
     type: select
     proxies:
       - outline
       - DIRECT
 
 rules:
-  - MATCH,GLOBAL
+  # 本地和局域网
+  - DOMAIN-SUFFIX,local,DIRECT
+  - IP-CIDR,127.0.0.0/8,DIRECT
+
+  # 国内网站（直连）
+  - GEOIP,CN,DIRECT
+
+  # 常见国外服务（强制走代理）
+  - DOMAIN-SUFFIX,openai.com,PROXY
+  - DOMAIN-SUFFIX,chatgpt.com,PROXY
+  - DOMAIN-SUFFIX,google.com,PROXY
+  - DOMAIN-SUFFIX,youtube.com,PROXY
+
+  # 兜底：全部走代理
+  - MATCH,PROXY
