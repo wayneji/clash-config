@@ -1,0 +1,22 @@
+port: 7890
+socks-port: 7891
+allow-lan: true
+mode: rule
+
+proxies:
+  - name: outline
+    type: ss
+    server: 209.38.16.247
+    port: 6800
+    cipher: chacha20-ietf-poly1305
+    password: G4J5AnTYBKqSUbchxHhmhk
+
+proxy-groups:
+  - name: GLOBAL
+    type: select
+    proxies:
+      - outline
+      - DIRECT
+
+rules:
+  - MATCH,GLOBAL
