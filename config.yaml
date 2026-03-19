@@ -26,6 +26,7 @@ rules:
   # 👇 强制国内关键站直连（优先级最高）
   - DOMAIN-SUFFIX,baidu.com,DIRECT
   - DOMAIN-SUFFIX,cctv.com,DIRECT
+  - DOMAIN-SUFFIX,apple.com.cn,DIRECT
 
   # 国内网站（直连）
   - GEOIP,CN,DIRECT
