@@ -6,10 +6,10 @@ mode: rule
 proxies:
   - name: outline
     type: ss
-    server: 206.189.67.142
-    port: 18425
+    server: 146.190.52.81
+    port: 38703
     cipher: chacha20-ietf-poly1305
-    password: zFUNiwsicfoocw0MiCG61d
+    password: 8mzY1ZwJka5efnMAN9L5xG
 
 proxy-groups:
   - name: PROXY
