@@ -1,0 +1,43 @@
+port: 7890
+socks-port: 7891
+allow-lan: true
+mode: rule
+
+proxies:
+  - name: outline
+    type: ss
+    server: 159.203.38.135
+    port: 52459
+    cipher: chacha20-ietf-poly1305
+    password: vTt8LNtbDLsPeGLT3gYgK7
+
+proxy-groups:
+  - name: PROXY
+    type: select
+    proxies:
+      - outline
+      - DIRECT
+
+rules:
+  # 本地和局域网
+  - DOMAIN-SUFFIX,local,DIRECT
+  - IP-CIDR,127.0.0.0/8,DIRECT
+  - IP-CIDR,172.16.0.0/12,DIRECT
+  - IP-CIDR,192.168.0.0/16,DIRECT
+
+  # 👇 强制国内关键站直连
+  - DOMAIN-SUFFIX,baidu.com,DIRECT
+  - DOMAIN-SUFFIX,cctv.com,DIRECT
+  - DOMAIN-SUFFIX,apple.com.cn,DIRECT
+
+  # 国内网站（直连）
+  - GEOIP,CN,DIRECT
+
+  # 常见国外服务（强制走代理）
+  - DOMAIN-SUFFIX,openai.com,PROXY
+  - DOMAIN-SUFFIX,chatgpt.com,PROXY
+  - DOMAIN-SUFFIX,google.com,PROXY
+  - DOMAIN-SUFFIX,youtube.com,PROXY
+
+  # 兜底：全部走代理
+  - MATCH,PROXY
