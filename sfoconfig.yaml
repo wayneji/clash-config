@@ -1,43 +1,55 @@
+# 基础连接设置
 port: 7890
 socks-port: 7891
 allow-lan: true
 mode: rule
+log-level: info
+ipv6: false
 
+# 代理节点配置
 proxies:
-  - name: outline
+  - name: SFO
     type: ss
     server: 64.23.245.188
     port: 31314
     cipher: chacha20-ietf-poly1305
-    password: BXnvtNdSNgZ8RqHunmn4od
+    password: "BXnvtNdSNgZ8RqHunmn4od"
+    udp: true
 
+# 策略组配置
 proxy-groups:
   - name: PROXY
     type: select
     proxies:
-      - outline
+      - SFO
       - DIRECT
 
+# 分流规则
 rules:
-  # 本地和局域网
+  # 1. 局域网与本地地址直连
   - DOMAIN-SUFFIX,local,DIRECT
   - IP-CIDR,127.0.0.0/8,DIRECT
   - IP-CIDR,172.16.0.0/12,DIRECT
   - IP-CIDR,192.168.0.0/16,DIRECT
+  - IP-CIDR,10.0.0.0/8,DIRECT
 
-  # 👇 强制国内关键站直连
+  # 2. 强制国内关键站直连 (Apple/Baidu等)
   - DOMAIN-SUFFIX,baidu.com,DIRECT
   - DOMAIN-SUFFIX,cctv.com,DIRECT
+  - DOMAIN-SUFFIX,apple.com,DIRECT
   - DOMAIN-SUFFIX,apple.com.cn,DIRECT
+  - DOMAIN-SUFFIX,icloud.com,DIRECT
 
-  # 国内网站（直连）
-  - GEOIP,CN,DIRECT
-
-  # 常见国外服务（强制走代理）
+  # 3. 常见国外服务强制走代理 (避免 DNS 污染)
   - DOMAIN-SUFFIX,openai.com,PROXY
   - DOMAIN-SUFFIX,chatgpt.com,PROXY
   - DOMAIN-SUFFIX,google.com,PROXY
   - DOMAIN-SUFFIX,youtube.com,PROXY
+  - DOMAIN-SUFFIX,github.com,PROXY
+  - DOMAIN-SUFFIX,githubusercontent.com,PROXY
 
-  # 兜底：全部走代理
+  # 4. 基于地理位置自动分流 (中国 IP 直连)
+  - GEOIP,CN,DIRECT
+
+  # 5. 兜底规则：其余全部走代理
   - MATCH,PROXY
