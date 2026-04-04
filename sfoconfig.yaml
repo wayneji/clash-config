@@ -4,7 +4,7 @@ allow-lan: true
 mode: rule
 
 proxies:
-  - name: SFO
+  - name: outline
     type: ss
     server: 64.23.245.188
     port: 31314
