@@ -4,13 +4,6 @@ allow-lan: true
 mode: rule
 
 proxies:
-  - name: "NYC"
-    type: ss
-    server: 162.243.19.77
-    port: 24912
-    cipher: chacha20-ietf-poly1305
-    password: 1yQXDIDZIcgYY4AEekGiks
-
   - name: "SFO"
     type: ss
     server: 138.68.26.182
@@ -23,7 +16,6 @@ proxy-groups:
   - name: PROXY
     type: url-test
     proxies:
-      - "NYC"
       - "SFO"
     url: 'http://www.gstatic.com/generate_204'
     interval: 300
