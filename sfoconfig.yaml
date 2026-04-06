@@ -4,7 +4,14 @@ allow-lan: true
 mode: rule
 
 proxies:
-  - name: "SFO"
+  - name: "SFO3"
+    type: ss
+    server: 144.126.208.39
+    port: 54772
+    cipher: chacha20-ietf-poly1305
+    password: wsA6RLmXrHhWSMjuCS0AdD
+
+  - name: "SFO2"
     type: ss
     server: 138.68.26.182
     port: 41274
@@ -12,11 +19,12 @@ proxies:
     password: qAb1RzNzU2HFAOxhqNjtXe
 
 proxy-groups:
-  # 自动选择延迟最低的节点（NYC 或 SFO）
+  # 自动选择延迟最低的节点（SFO3 或 SFO2）
   - name: PROXY
     type: url-test
     proxies:
-      - "SFO"
+      - "SFO3"
+      - "SFO2"
     url: 'http://www.gstatic.com/generate_204'
     interval: 300
 
@@ -33,7 +41,7 @@ rules:
   - DOMAIN-SUFFIX,apple.com.cn,DIRECT
   - GEOIP,CN,DIRECT
 
-  # GitHub 相关（强制走代理，解决加载缓慢或无法克隆的问题）
+  # GitHub 相关（强制走代理）
   - DOMAIN-KEYWORD,github,PROXY
   - DOMAIN-SUFFIX,github.com,PROXY
   - DOMAIN-SUFFIX,githubassets.com,PROXY
