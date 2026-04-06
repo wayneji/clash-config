@@ -4,13 +4,6 @@ allow-lan: true
 mode: rule
 
 proxies:
-  - name: "SFO3"
-    type: ss
-    server: 144.126.208.39
-    port: 54772
-    cipher: chacha20-ietf-poly1305
-    password: wsA6RLmXrHhWSMjuCS0AdD
-
   - name: "SFO2"
     type: ss
     server: 138.68.26.182
@@ -23,7 +16,6 @@ proxy-groups:
   - name: PROXY
     type: url-test
     proxies:
-      - "SFO3"
       - "SFO2"
     url: 'http://www.gstatic.com/generate_204'
     interval: 300
