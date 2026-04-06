@@ -10,10 +10,10 @@ ipv6: false
 proxies:
   - name: SFO
     type: ss
-    server: 64.23.245.188
-    port: 31314
+    server: 138.68.26.182
+    port: 41274
     cipher: chacha20-ietf-poly1305
-    password: "BXnvtNdSNgZ8RqHunmn4od"
+    password: "qAb1RzNzU2HFAOxhqNjtXe"
     udp: true
 
 # 策略组配置
