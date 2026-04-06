@@ -1,55 +1,58 @@
-# 基础连接设置
 port: 7890
 socks-port: 7891
 allow-lan: true
 mode: rule
-log-level: info
-ipv6: false
 
-# 代理节点配置
 proxies:
-  - name: SFO
+  - name: "NYC"
+    type: ss
+    server: 162.243.19.77
+    port: 24912
+    cipher: chacha20-ietf-poly1305
+    password: 1yQXDIDZIcgYY4AEekGiks
+
+  - name: "SFO"
     type: ss
     server: 138.68.26.182
     port: 41274
     cipher: chacha20-ietf-poly1305
-    password: "qAb1RzNzU2HFAOxhqNjtXe"
-    udp: true
+    password: qAb1RzNzU2HFAOxhqNjtXe
 
-# 策略组配置
 proxy-groups:
+  # 自动选择延迟最低的节点（NYC 或 SFO）
   - name: PROXY
-    type: select
+    type: url-test
     proxies:
-      - SFO
-      - DIRECT
+      - "NYC"
+      - "SFO"
+    url: 'http://www.gstatic.com/generate_204'
+    interval: 300
 
-# 分流规则
 rules:
-  # 1. 局域网与本地地址直连
+  # 局域网直连
   - DOMAIN-SUFFIX,local,DIRECT
   - IP-CIDR,127.0.0.0/8,DIRECT
   - IP-CIDR,172.16.0.0/12,DIRECT
   - IP-CIDR,192.168.0.0/16,DIRECT
-  - IP-CIDR,10.0.0.0/8,DIRECT
 
-  # 2. 强制国内关键站直连 (Apple/Baidu等)
+  # 强制国内直连
   - DOMAIN-SUFFIX,baidu.com,DIRECT
   - DOMAIN-SUFFIX,cctv.com,DIRECT
-  - DOMAIN-SUFFIX,apple.com,DIRECT
   - DOMAIN-SUFFIX,apple.com.cn,DIRECT
-  - DOMAIN-SUFFIX,icloud.com,DIRECT
+  - GEOIP,CN,DIRECT
 
-  # 3. 常见国外服务强制走代理 (避免 DNS 污染)
+  # GitHub 相关（强制走代理，解决加载缓慢或无法克隆的问题）
+  - DOMAIN-KEYWORD,github,PROXY
+  - DOMAIN-SUFFIX,github.com,PROXY
+  - DOMAIN-SUFFIX,githubassets.com,PROXY
+  - DOMAIN-SUFFIX,githubusercontent.com,PROXY
+  - DOMAIN-SUFFIX,git.io,PROXY
+
+  # 其他国外常用服务
   - DOMAIN-SUFFIX,openai.com,PROXY
   - DOMAIN-SUFFIX,chatgpt.com,PROXY
   - DOMAIN-SUFFIX,google.com,PROXY
   - DOMAIN-SUFFIX,youtube.com,PROXY
-  - DOMAIN-SUFFIX,github.com,PROXY
-  - DOMAIN-SUFFIX,githubusercontent.com,PROXY
 
-  # 4. 基于地理位置自动分流 (中国 IP 直连)
-  - GEOIP,CN,DIRECT
-
-  # 5. 兜底规则：其余全部走代理
+  # 兜底：全部走代理
   - MATCH,PROXY
