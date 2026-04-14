@@ -55,6 +55,20 @@ proxy-groups:
       - "Outline-Node"
 
 rules:
+  # --- 👇👇 Tailscale 专属直连规则 (精确优化版) 👇👇 ---
+  # 1. 精确锁定你的两台设备 IP（最高优先级，绝对防漏，VNC 零延迟）
+  - IP-CIDR,100.64.172.49/32,DIRECT # macmini
+  - IP-CIDR,100.89.68.31/32,DIRECT  # weimings-macbook-pro
+  
+  # 2. 兜底涵盖整个 Tailscale 虚拟局域网段
+  - IP-CIDR,100.64.0.0/10,DIRECT
+  
+  # 3. 放行 Tailscale 底层服务与心跳检测
+  - DOMAIN-SUFFIX,tailscale.com,DIRECT
+  - DOMAIN-SUFFIX,ts.net,DIRECT
+  - PROCESS-NAME,tailscaled,DIRECT
+  # --- 👆👆 Tailscale 规则结束 👆👆 ---
+  
   # --- 局域网直连 (保持你的原始设定) ---
   - DOMAIN-SUFFIX,local,DIRECT
   - IP-CIDR,127.0.0.0/8,DIRECT
