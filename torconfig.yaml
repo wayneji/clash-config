@@ -95,6 +95,14 @@ rules:
   - IP-CIDR6,2001:b28::/32,PROXY
   # --- 👆 核心业务专属规则结束 👆 ---
 
+  # --- 确保 Discord 全家桶绝对走代理 ---
+  - DOMAIN-SUFFIX,discord.com,PROXY
+  - DOMAIN-SUFFIX,discord.gg,PROXY
+  - DOMAIN-SUFFIX,discordapp.com,PROXY
+  - DOMAIN-SUFFIX,discordapp.net,PROXY
+  - DOMAIN-SUFFIX,discord.media,PROXY
+  - DOMAIN-KEYWORD,discord,PROXY
+
   # --- 强制国内直连 ---
   - DOMAIN-SUFFIX,baidu.com,DIRECT
   - DOMAIN-SUFFIX,cctv.com,DIRECT
