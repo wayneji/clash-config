@@ -5,6 +5,16 @@ mode: rule
 log-level: info
 ipv6: false
 
+# 👇👇👇 强制开启 TUN 模式的核心代码 👇👇👇
+tun:
+  enable: true
+  stack: gvisor
+  auto-route: true
+  auto-detect-interface: true
+  dns-hijack:
+    - any:53
+# 👆👆👆 TUN 核心代码结束 👆👆👆
+
 # 强烈建议的 TUN & DNS 增强配置 (确保 OpenClaw 和手机端流量被完美劫持)
 dns:
   enable: true
