@@ -8,9 +8,10 @@ ipv6: false
 # 👇👇👇 强制开启 TUN 模式的核心代码 👇👇👇
 tun:
   enable: true
-  stack: gvisor
-  mut: 1380
+  stack: system       # 建议从 gvisor 改为 system，配合 sudo 效果更好
+  mtu: 1380           # 修正拼写错误
   auto-route: true
+  strict-route: true  # 强制接管，防止流量从侧面漏掉
   auto-detect-interface: true
   dns-hijack:
     - any:53
