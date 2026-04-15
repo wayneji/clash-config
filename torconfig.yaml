@@ -9,6 +9,7 @@ ipv6: false
 tun:
   enable: true
   stack: gvisor
+  mut: 1380
   auto-route: true
   auto-detect-interface: true
   dns-hijack:
