@@ -34,7 +34,7 @@ rules:
   - DOMAIN-SUFFIX,ts.net,DIRECT
   - PROCESS-NAME,tailscaled,DIRECT
   # --- 👆👆 Tailscale 规则结束 👆👆 ---
-  
+
   # 局域网直连
   - DOMAIN-SUFFIX,local,DIRECT
   - IP-CIDR,127.0.0.0/8,DIRECT
@@ -45,6 +45,7 @@ rules:
   - DOMAIN-SUFFIX,baidu.com,DIRECT
   - DOMAIN-SUFFIX,cctv.com,DIRECT
   - DOMAIN-SUFFIX,apple.com.cn,DIRECT
+  - DOMAIN-SUFFIX,linkedin.com,PROXY
   - GEOIP,CN,DIRECT
 
   # GitHub 相关（强制走代理）
