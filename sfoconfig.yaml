@@ -6,10 +6,10 @@ mode: rule
 proxies:
   - name: "SFO2"
     type: ss
-    server: 64.227.53.181
-    port: 49297
+    server: 167.71.153.42
+    port: 53983
     cipher: chacha20-ietf-poly1305
-    password: wAYeDSsOXip5u9o7MZp2O5
+    password: DKbR0mG3bwDlzaCYl5rypV
 
 proxy-groups:
   # 自动选择延迟最低的节点（SFO3 或 SFO2）
