@@ -2,59 +2,23 @@ port: 7890
 socks-port: 7891
 allow-lan: true
 mode: rule
-log-level: info
-ipv6: false
-
-# 👇👇👇 强制开启 TUN 模式的核心代码 👇👇👇
-tun:
-  enable: true
-  stack: gvisor       # 建议从 gvisor 改为 system，配合 sudo 效果更好
-  mtu: 1380           # 修正拼写错误
-  auto-route: true
-  strict-route: true  # 强制接管，防止流量从侧面漏掉
-  auto-detect-interface: true
-  dns-hijack:
-    - any:53
-# 👆👆👆 TUN 核心代码结束 👆👆👆
-
-# 强烈建议的 TUN & DNS 增强配置 (确保 OpenClaw 和手机端流量被完美劫持)
-dns:
-  enable: true
-  listen: 0.0.0.0:1053
-  ipv6: false
-  enhanced-mode: fake-ip
-  fake-ip-range: 198.18.0.1/16
-  fake-ip-filter:
-    - '*.lan'
-    - localhost.ptlogin2.qq.com
-  nameserver:
-    - 114.114.114.114
-    - 223.5.5.5
-    - 8.8.8.8
-  fallback:
-    - tls://8.8.4.4
-    - tls://1.1.1.1
-  fallback-filter:
-    geoip: true
-    geoip-code: CN
-    ipcidr:
-      - 240.0.0.0/4
 
 proxies:
-  # 从你提供的 Outline 链接中解析出的节点
-  - name: "Outline-Node"
+  - name: "TOR"
     type: ss
-    server: 143.198.41.36
-    port: 3517
+    server: 137.184.161.148
+    port: 8247
     cipher: chacha20-ietf-poly1305
-    password: "NuahNtwoN9kO2wlHVHXih2"
+    password: Eo7o47sFHtVaM1QsSVQ9yF
 
 proxy-groups:
-  # 由于目前只有一个节点，改为 select 手动选择模式更稳定
+  # 自动选择延迟最低的节点（SFO3 或 SFO2）
   - name: PROXY
-    type: select
+    type: url-test
     proxies:
-      - "Outline-Node"
+      - "TOR"
+    url: 'http://www.gstatic.com/generate_204'
+    interval: 300
 
 rules:
   # --- 👇👇 Tailscale 专属直连规则 (精确优化版) 👇👇 ---
@@ -70,59 +34,32 @@ rules:
   - DOMAIN-SUFFIX,ts.net,DIRECT
   - PROCESS-NAME,tailscaled,DIRECT
   # --- 👆👆 Tailscale 规则结束 👆👆 ---
-  
-  # --- 局域网直连 (保持你的原始设定) ---
+
+  # 局域网直连
   - DOMAIN-SUFFIX,local,DIRECT
   - IP-CIDR,127.0.0.0/8,DIRECT
   - IP-CIDR,172.16.0.0/12,DIRECT
   - IP-CIDR,192.168.0.0/16,DIRECT
 
-  # --- 👇 OpenClaw 核心业务专属规则 👇 ---
-  # 1. 确保 MiniMax 国内 API 绝对直连（最快响应不绕路）
-  - DOMAIN-SUFFIX,minimax.chat,DIRECT
-  - DOMAIN-SUFFIX,minimax.ai,DIRECT
-  - DOMAIN-KEYWORD,minimax,DIRECT
-
-  # 2. 确保 Telegram 和 Discord 绝对走代理（防死角）
-  - GEOSITE,telegram,PROXY
-  - GEOSITE,discord,PROXY
-  
-  # Telegram 专属 ASN 和 IP 段（防直连 IP 泄露导致失联）
-  - IP-CIDR,91.108.4.0/22,PROXY
-  - IP-CIDR,91.108.8.0/22,PROXY
-  - IP-CIDR,91.108.12.0/22,PROXY
-  - IP-CIDR,91.108.16.0/22,PROXY
-  - IP-CIDR,91.108.56.0/22,PROXY
-  - IP-CIDR,149.154.160.0/20,PROXY
-  - IP-CIDR6,2001:b28::/32,PROXY
-  # --- 👆 核心业务专属规则结束 👆 ---
-
-  # --- 确保 Discord 全家桶绝对走代理 ---
-  - DOMAIN-SUFFIX,discord.com,PROXY
-  - DOMAIN-SUFFIX,discord.gg,PROXY
-  - DOMAIN-SUFFIX,discordapp.com,PROXY
-  - DOMAIN-SUFFIX,discordapp.net,PROXY
-  - DOMAIN-SUFFIX,discord.media,PROXY
-  - DOMAIN-KEYWORD,discord,PROXY
-
-  # --- 强制国内直连 ---
+  # 强制国内直连
   - DOMAIN-SUFFIX,baidu.com,DIRECT
   - DOMAIN-SUFFIX,cctv.com,DIRECT
   - DOMAIN-SUFFIX,apple.com.cn,DIRECT
+  - DOMAIN-SUFFIX,linkedin.com,PROXY
   - GEOIP,CN,DIRECT
 
-  # --- GitHub 相关 (强制走代理) ---
+  # GitHub 相关（强制走代理）
   - DOMAIN-KEYWORD,github,PROXY
   - DOMAIN-SUFFIX,github.com,PROXY
   - DOMAIN-SUFFIX,githubassets.com,PROXY
   - DOMAIN-SUFFIX,githubusercontent.com,PROXY
   - DOMAIN-SUFFIX,git.io,PROXY
 
-  # --- 其他国外常用服务 ---
+  # 其他国外常用服务
   - DOMAIN-SUFFIX,openai.com,PROXY
   - DOMAIN-SUFFIX,chatgpt.com,PROXY
   - DOMAIN-SUFFIX,google.com,PROXY
   - DOMAIN-SUFFIX,youtube.com,PROXY
 
-  # --- 兜底：未匹配规则的全部走代理 ---
+  # 兜底：全部走代理
   - MATCH,PROXY
