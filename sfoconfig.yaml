@@ -4,19 +4,19 @@ allow-lan: true
 mode: rule
 
 proxies:
-  - name: "SFO2"
+  - name: "US"
     type: ss
-    server: 157.230.169.16
-    port: 42313
+    server: 159.223.173.227
+    port: 2524
     cipher: chacha20-ietf-poly1305
-    password: wyss8GbbunXn9F6tRK8H3M
+    password: fIqOzem14eqLiKyre6IJgB
 
 proxy-groups:
   # 自动选择延迟最低的节点（SFO3 或 SFO2）
   - name: PROXY
     type: url-test
     proxies:
-      - "SFO2"
+      - "US"
     url: 'http://www.gstatic.com/generate_204'
     interval: 300
 
