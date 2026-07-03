@@ -6,10 +6,10 @@ mode: rule
 proxies:
   - name: "US"
     type: ss
-    server: 170.64.168.25
-    port: 37234
+    server: 147.182.197.40
+    port: 62295
     cipher: chacha20-ietf-poly1305
-    password: U69OU9P02piJoxN2LbaDVK
+    password: LKJ0CNtBe5e7GwAq6zKEQk
 
 proxy-groups:
   # 自动选择延迟最低的节点（SFO3 或 SFO2）
