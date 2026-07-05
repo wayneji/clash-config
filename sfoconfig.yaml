@@ -9,7 +9,7 @@ proxies:
     server: 147.182.197.40
     port: 62295
     cipher: chacha20-ietf-poly1305
-    password: LKJ0CNtBe5e7GwAq6zKEQk
+    password: KLJ0CNtBe5e7GwAq6zKEQk
 
 proxy-groups:
   # 自动选择延迟最低的节点（SFO3 或 SFO2）
