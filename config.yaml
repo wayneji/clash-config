@@ -4,36 +4,58 @@ allow-lan: true
 mode: rule
 
 proxies:
-  - name: outline
+  - name: "Global"
     type: ss
-    server: 209.38.16.247
-    port: 6800
+    server: 147.182.197.40
+    port: 62295
     cipher: chacha20-ietf-poly1305
-    password: G4J5AnTYBKqSUbchxHhmhk
+    password: KLJ0CNtBe5e7GwAq6zKEQk
 
 proxy-groups:
+  # 自动选择延迟最低的节点（SFO3 或 SFO2）
   - name: PROXY
-    type: select
+    type: url-test
     proxies:
-      - outline
-      - DIRECT
+      - "Global"
+    url: 'http://www.gstatic.com/generate_204'
+    interval: 300
 
 rules:
-  # 本地和局域网
+  # --- 👇👇 Tailscale 专属直连规则 (精确优化版) 👇👇 ---
+  # 1. 精确锁定你的两台设备 IP（最高优先级，绝对防漏，VNC 零延迟）
+  - IP-CIDR,100.64.172.49/32,DIRECT # macmini
+  - IP-CIDR,100.89.68.31/32,DIRECT  # weimings-macbook-pro
+  
+  # 2. 兜底涵盖整个 Tailscale 虚拟局域网段
+  - IP-CIDR,100.64.0.0/10,DIRECT
+  
+  # 3. 放行 Tailscale 底层服务与心跳检测
+  - DOMAIN-SUFFIX,tailscale.com,DIRECT
+  - DOMAIN-SUFFIX,ts.net,DIRECT
+  - PROCESS-NAME,tailscaled,DIRECT
+  # --- 👆👆 Tailscale 规则结束 👆👆 ---
+
+  # 局域网直连
   - DOMAIN-SUFFIX,local,DIRECT
   - IP-CIDR,127.0.0.0/8,DIRECT
-  - IP-CIDR,192.168.0.0/24,DIRECT
-  
+  - IP-CIDR,172.16.0.0/12,DIRECT
+  - IP-CIDR,192.168.0.0/16,DIRECT
 
-  # 👇 强制国内关键站直连（优先级最高）
+  # 强制国内直连
   - DOMAIN-SUFFIX,baidu.com,DIRECT
   - DOMAIN-SUFFIX,cctv.com,DIRECT
   - DOMAIN-SUFFIX,apple.com.cn,DIRECT
-
-  # 国内网站（直连）
+  - DOMAIN-SUFFIX,linkedin.com,PROXY
   - GEOIP,CN,DIRECT
 
-  # 常见国外服务（强制走代理）
+  # GitHub 相关（强制走代理）
+  - DOMAIN-KEYWORD,github,PROXY
+  - DOMAIN-SUFFIX,github.com,PROXY
+  - DOMAIN-SUFFIX,githubassets.com,PROXY
+  - DOMAIN-SUFFIX,githubusercontent.com,PROXY
+  - DOMAIN-SUFFIX,git.io,PROXY
+
+  # 其他国外常用服务
   - DOMAIN-SUFFIX,openai.com,PROXY
   - DOMAIN-SUFFIX,chatgpt.com,PROXY
   - DOMAIN-SUFFIX,google.com,PROXY
