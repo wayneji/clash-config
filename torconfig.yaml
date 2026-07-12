@@ -6,10 +6,10 @@ mode: rule
 proxies:
   - name: "TOR"
     type: ss
-    server: 146.190.142.92
-    port: 11488
+    server: 159.65.63.224
+    port: 11002
     cipher: chacha20-ietf-poly1305
-    password: wQ29X1QdMJ9o6t1NhWgZxd
+    password: ZEmtlih80ZnSXdNaPNb9Zg
 
 proxy-groups:
   # 自动选择延迟最低的节点（SFO3 或 SFO2）
