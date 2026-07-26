@@ -6,10 +6,10 @@ mode: rule
 proxies:
   - name: "US"
     type: ss
-    server: 206.189.209.152
-    port: 29080
+    server: 138.197.218.53
+    port: 7069
     cipher: chacha20-ietf-poly1305
-    password: y28NzMkLBhM7HUENSiyE6r
+    password: BhaRLi7xFgpRvAejn9353f
 
 proxy-groups:
   # 自动选择延迟最低的节点（SFO3 或 SFO2）
