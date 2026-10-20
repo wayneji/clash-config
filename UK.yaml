@@ -9,7 +9,7 @@ proxies:
     server: 35.179.186.250
     port: 37410
     cipher: chacha20-ietf-poly1305
-    password: "T8NAfIWv0xuPZkW0PVNcn"
+    password: "T8NAfIWv0xuHPZkW0PVNcn"
 
 proxy-groups:
   # 自动选择延迟最低的节点（SFO3 或 SFO2）
