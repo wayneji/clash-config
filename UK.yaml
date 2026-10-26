@@ -6,10 +6,10 @@ mode: rule
 proxies:
   - name: "Global"
     type: ss
-    server: 35.176.200.45
-    port: 41479
+    server: 3.9.132.46
+    port: 41961
     cipher: chacha20-ietf-poly1305
-    password: "pi6AS8ePTm1odnhUH3iw3L"
+    password: "Ric4IoIn9AebWzd0gCdubZ"
 
 proxy-groups:
   # 自动选择延迟最低的节点（SFO3 或 SFO2）
