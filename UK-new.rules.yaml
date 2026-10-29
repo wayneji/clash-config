@@ -1,0 +1,78 @@
+# Partial configuration: replace mode, proxy-groups and rules in UK.yaml.
+# Keep the existing single-server proxies block. This file alone is not importable.
+mode: rule
+
+proxy-groups:
+  # One server only. Periodic latency samples; no node switching or failover.
+  - name: PROXY
+    type: url-test
+    proxies:
+      - Global
+    url: http://www.gstatic.com/generate_204
+    interval: 300
+
+rules:
+  # Tailscale control traffic and local names.
+  - PROCESS-NAME,tailscaled,DIRECT
+  - DOMAIN-SUFFIX,tailscale.com,DIRECT
+  - DOMAIN-SUFFIX,tailscale.io,DIRECT
+  - DOMAIN-SUFFIX,ts.net,DIRECT
+  - DOMAIN-SUFFIX,local,DIRECT
+  - DOMAIN-SUFFIX,lan,DIRECT
+
+  # Local destinations: do not trigger DNS just to test these CIDRs.
+  - IP-CIDR,127.0.0.0/8,DIRECT,no-resolve
+  - IP-CIDR,10.0.0.0/8,DIRECT,no-resolve
+  - IP-CIDR,172.16.0.0/12,DIRECT,no-resolve
+  - IP-CIDR,192.168.0.0/16,DIRECT,no-resolve
+  - IP-CIDR,169.254.0.0/16,DIRECT,no-resolve
+  - IP-CIDR,100.64.0.0/10,DIRECT,no-resolve
+  - IP-CIDR6,::1/128,DIRECT,no-resolve
+  - IP-CIDR6,fc00::/7,DIRECT,no-resolve
+  - IP-CIDR6,fe80::/10,DIRECT,no-resolve
+
+  # Explicit domestic destinations.
+  - DOMAIN-SUFFIX,baidu.com,DIRECT
+  - DOMAIN-SUFFIX,cctv.com,DIRECT
+  - DOMAIN-SUFFIX,apple.com.cn,DIRECT
+
+  # Explicit proxy destinations: before GEOIP to avoid IP-based overrides.
+  - DOMAIN-SUFFIX,linkedin.com,PROXY
+  - DOMAIN-SUFFIX,github.com,PROXY
+  - DOMAIN-SUFFIX,githubassets.com,PROXY
+  - DOMAIN-SUFFIX,githubusercontent.com,PROXY
+  - DOMAIN-SUFFIX,git.io,PROXY
+  - DOMAIN-SUFFIX,openai.com,PROXY
+  - DOMAIN-SUFFIX,chatgpt.com,PROXY
+
+  # Google / YouTube Kids and media dependencies.
+  - DOMAIN-SUFFIX,google.com,PROXY
+  - DOMAIN-SUFFIX,googleapis.com,PROXY
+  - DOMAIN-SUFFIX,googleusercontent.com,PROXY
+  - DOMAIN-SUFFIX,gstatic.com,PROXY
+  - DOMAIN-SUFFIX,youtube.com,PROXY
+  - DOMAIN-SUFFIX,youtubekids.com,PROXY
+  - DOMAIN-SUFFIX,youtu.be,PROXY
+  - DOMAIN-SUFFIX,googlevideo.com,PROXY
+  - DOMAIN-SUFFIX,ytimg.com,PROXY
+  - DOMAIN-SUFFIX,ggpht.com,PROXY
+
+  # BBC / CBBC. This does not guarantee media availability or playback rights.
+  - DOMAIN-SUFFIX,bbc.co.uk,PROXY
+  - DOMAIN-SUFFIX,bbc.com,PROXY
+  - DOMAIN-SUFFIX,bbci.co.uk,PROXY
+  - DOMAIN-SUFFIX,bbcimg.co.uk,PROXY
+  - DOMAIN-SUFFIX,bbcmedia.co.uk,PROXY
+
+  # Explicit benchmark paths.
+  - DOMAIN-SUFFIX,fast.com,PROXY
+  - DOMAIN-SUFFIX,netflix.com,PROXY
+  - DOMAIN-SUFFIX,nflxvideo.net,PROXY
+  - DOMAIN-SUFFIX,nflximg.net,PROXY
+  - DOMAIN-SUFFIX,nflxso.net,PROXY
+  - DOMAIN,speed.cloudflare.com,PROXY
+  - DOMAIN,www.cloudflare.com,PROXY
+
+  # Other mainland-China IPs remain direct. DNS resolution here is intentional.
+  - GEOIP,CN,DIRECT
+  - MATCH,PROXY
