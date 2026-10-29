@@ -1,6 +1,14 @@
-# Partial configuration: replace mode, proxy-groups and rules in UK.yaml.
-# Keep the existing single-server proxies block. This file alone is not importable.
+# UK rules configuration with the selected Shadowsocks server.
+# Merge with UK.yaml listener settings if needed.
 mode: rule
+
+proxies:
+  - name: Global
+    type: ss
+    server: 35.177.145.22
+    port: 57406
+    cipher: chacha20-ietf-poly1305
+    password: "c9qlzZmezjQXrzUR2lQULW"
 
 proxy-groups:
   # One server only. Periodic latency samples; no node switching or failover.
