@@ -5,10 +5,10 @@ mode: rule
 proxies:
   - name: Global
     type: ss
-    server: 18.132.42.105
-    port: 23208
+    server: 13.40.26.244
+    port: 25209
     cipher: chacha20-ietf-poly1305
-    password: "ZIe5WuKvoyz5fvnQcZDxd5"
+    password: "hDVwkJ6DVUSVdHsE7t2wL5"
 
 proxy-groups:
   # One server only. Periodic latency samples; no node switching or failover.
