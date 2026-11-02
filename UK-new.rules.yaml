@@ -1,23 +1,28 @@
-# UK rules configuration with the selected Shadowsocks server.
+# UK Shadowsocks IPv4 / IPv6 manual selection.
 # Merge with UK.yaml listener settings if needed.
 mode: rule
 
 proxies:
-  - name: Global
+  - name: UK-IPv4
     type: ss
     server: 35.179.115.63
     port: 44963
     cipher: chacha20-ietf-poly1305
     password: "TLypZBzgodUuxGREiSAJBz"
+  - name: UK-IPv6
+    type: ss
+    server: "2a05:d01c:f9a:c500:9236:4a9:ee54:1705"
+    port: 44963
+    cipher: chacha20-ietf-poly1305
+    password: "TLypZBzgodUuxGREiSAJBz"
 
 proxy-groups:
-  # One server only. Periodic latency samples; no node switching or failover.
+  # Choose IPv4 or IPv6 manually in the client; IPv4 is the default.
   - name: PROXY
-    type: url-test
+    type: select
     proxies:
-      - Global
-    url: http://www.gstatic.com/generate_204
-    interval: 300
+      - UK-IPv4
+      - UK-IPv6
 
 rules:
   # Tailscale control traffic and local names.
