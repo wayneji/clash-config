@@ -6,10 +6,10 @@ mode: rule
 proxies:
   - name: "US"
     type: ss
-    server: 137.184.238.57
-    port: 11614
+    server: 167.71.85.8
+    port: 39434
     cipher: chacha20-ietf-poly1305
-    password: "0yiZQXOaiORFSSXqYBYFjg"
+    password: "eUm3qZlg6cAzSX9c1SQ5de"
 
 proxy-groups:
   # 自动选择延迟最低的节点（SFO3 或 SFO2）
