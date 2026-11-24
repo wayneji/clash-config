@@ -5,16 +5,16 @@ mode: rule
 proxies:
   - name: UK-IPv4
     type: ss
-    server: 3.8.238.234
-    port: 6678
+    server: 13.40.85.16
+    port: 56388
     cipher: chacha20-ietf-poly1305
-    password: "o4mvLTosonJZ3Jv2lTRemh"
+    password: "ewBvE05eAP7Mu2r7YZMioY"
   - name: UK-IPv6
     type: ss
-    server: "2a05:d01c:f9a:c500:345e:7775:2254:732f"
-    port: 6678
+    server: "2a05:d01c:f9a:c500:e691:6cf2:d6b3:e6d5"
+    port: 56388
     cipher: chacha20-ietf-poly1305
-    password: "o4mvLTosonJZ3Jv2lTRemh"
+    password: "ewBvE05eAP7Mu2r7YZMioY"
 
 proxy-groups:
   # Choose IPv4 or IPv6 manually in the client; IPv4 is the default.
